@@ -14,7 +14,7 @@ object ConfigLoader {
     val configPath = Paths.get(workingDir, CONFIG_NAME)
     if (Files.exists(configPath)) {
       val contents = Files.readString(configPath)
-      val config = JsonParser(contents).convertTo[Config]
+      val config = JsonParser(contents).convertTo[List[String]]
       val urls = config.urls
 
     } else {
@@ -23,5 +23,3 @@ object ConfigLoader {
     }
   }
 }
-
-case class Config(urls:List[String]) extends JsonSu[Config]
