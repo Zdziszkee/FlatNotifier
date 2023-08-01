@@ -1,5 +1,5 @@
 package me.zdziszkee.flatnotifier
-package http
+package clients
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http

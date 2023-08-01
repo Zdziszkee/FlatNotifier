@@ -1,25 +1,26 @@
 package me.zdziszkee.flatnotifier
 package config
 
-import spray.json.{JsonParser, JsonReader}
+
+import com.google.gson.Gson
 
 import java.nio.file.{Files, Paths}
 
-val SUPPORTED_SITES = List("https://www.olx.pl/");
 val CONFIG_NAME = "config.json"
+val gson = Gson()
+case class Config(url: String = "https://www.olx.pl/", email: String = "youremail@mail.com", delayInSeconds: Int = 30)
 
 object ConfigLoader {
-  def load(): Unit = {
+  def load(): Config = {
     val workingDir = Paths.get(".").toAbsolutePath.toString
     val configPath = Paths.get(workingDir, CONFIG_NAME)
     if (Files.exists(configPath)) {
       val contents = Files.readString(configPath)
-      val config = JsonParser(contents).convertTo[List[String]]
-      val urls = config.urls
-
+      gson.fromJson(contents,classOf[Config])
     } else {
-      Files.createFile(configPath)
-
+      val file = Files.createFile(configPath)
+      Files.write(file,gson.toJson(Config()).getBytes)
+      Config()
     }
   }
 }
